@@ -1,5 +1,11 @@
 - hosts: all
   tasks:
+    - name: create service template
+      become: yes
+      template:
+        src: ruby.service.j2
+        dest: /etc/systemd/system/ruby.service
+
     - name: copy artifact
       copy:
         src: simple-ruby.tar.gz
@@ -7,23 +13,17 @@
         mode: '0777'
     
     - name: extract artifact
-      command: 'tar -xvf simple-ruby.tar.gz' 
+      shell: 'tar -xvf simple-ruby.tar.gz' 
 
     - name: docker build
-      command: 'docker build -t csagan/simple-ruby .'
+      shell: 'docker build -t csagan/simple-ruby .'
       args:
         chdir: /home/vagrant/
 
     - name: docker run
-      command: 'docker run -d --restart always -p 9090:9090 csagan/simple-ruby:latest'
+      shell: 'docker run -d --restart always -p 9090:9090 csagan/simple-ruby:latest'
       args:
         chdir: /home/vagrant/
-
-    - name: create service template
-      become: yes
-      template:
-        src: ruby.service.j2
-        dest: /etc/systemd/system/ruby.service
 
     - name: enable and start service
       become: yes
