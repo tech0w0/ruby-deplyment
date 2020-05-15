@@ -7,14 +7,14 @@
         mode: '0777'
     
     - name: extract artifact
-      shell: tar -xvf simple-ruby.tar.gz 
+      command: 'tar -xvf simple-ruby.tar.gz' 
 
     - name: docker build
-      shell: docker build -t csagan/simple-ruby
+      command: 'docker build -t csagan/simple-ruby'
       args:
         chdir: /home/{{ ansible_user }}/simple-ruby
 
     - name: docker run
-      shell: docker run -d --restart always -p 9090:9090 csagan/simple-ruby:latest
+      command: 'docker run -d --restart always -p 9090:9090 csagan/simple-ruby:latest'
       args:
         chdir: /home/{{ ansible_user }}/simple-ruby
