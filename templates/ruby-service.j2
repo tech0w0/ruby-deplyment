@@ -1,0 +1,11 @@
+[Unit]
+Description=Our example of ruby application
+After=network.target
+[Service]
+Environment=GEM_PATH=/home/vagrant/.gem/ruby/
+WorkingDirectory=/home/vagrant/
+Type=simple
+ExecStart=/usr/bin/ruby main.rb
+[Install]
+WantedBy=default.target
+

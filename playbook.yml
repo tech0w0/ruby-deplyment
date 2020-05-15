@@ -3,7 +3,7 @@
     - name: copy artifact
       copy:
         src: simple-ruby.tar.gz
-        dest: /home/{{ ansible_user }}/simple-ruby.tar.gz
+        dest: /home/vagrant/simple-ruby.tar.gz
         mode: '0777'
     
     - name: extract artifact
@@ -12,9 +12,23 @@
     - name: docker build
       command: 'docker build -t csagan/simple-ruby'
       args:
-        chdir: /home/{{ ansible_user }}/simple-ruby
+        chdir: /home/vagrant/
 
     - name: docker run
       command: 'docker run -d --restart always -p 9090:9090 csagan/simple-ruby:latest'
       args:
-        chdir: /home/{{ ansible_user }}/simple-ruby
+        chdir: /home/vagrant/
+
+    - name: create service template
+      become: yes
+      template:
+        src: ruby.service.j2
+        dest: /etc/systemd/system/ruby.service
+
+    - name: enable and start service
+      become: yes
+      systemd:
+        name: ruby
+        enabled: yes
+        state: restarted
+        daemon_reload: yes
