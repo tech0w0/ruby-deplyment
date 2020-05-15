@@ -8,7 +8,7 @@ pipeline {
     stages {
        stage('Copy artifact') {
           steps {
-             copyArtifacts filter: 'main.rb', fingerprintArtifacts: true, projectName: 'simple-ruby', selector: lastSuccessful()
+             copyArtifacts filter: 'simple-ruby.tar.gz', fingerprintArtifacts: true, projectName: 'simple-ruby', selector: lastSuccessful()
           }
        }
 
